@@ -1,7 +1,6 @@
 import processing.core.PApplet;
 
 public class Game extends PApplet {
-    // TODO: declare game variables
 
     public void settings() {
         size(800, 800);   // set the window size
