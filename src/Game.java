@@ -1,6 +1,7 @@
 import processing.core.PApplet;
 
 public class Game extends PApplet {
+    Person bob1, bob2, bob3;
 
     public void settings() {
         size(800, 800);   // set the window size
@@ -8,7 +9,9 @@ public class Game extends PApplet {
     }
 
     public void setup() {
-        // TODO: initialize game variables
+        Person bob = new Person(0);
+        Person bob2 = new Person(1);
+        Person bob3 = new Person(2);
     }
 
     /***
@@ -16,11 +19,14 @@ public class Game extends PApplet {
      * tick each object (have it update itself), and draw each object
      */
     public void draw() {
-        background(255);    // paint screen white
-        fill(0,255,0);          // load green paint color
-        ellipse(mouseX, mouseY, 60, 60);  // draw circle at mouse loc
-        ellipse(mouseX - 80, mouseY, 60, 60);  // draw circle at mouse loc
-        ellipse(mouseX + 80, mouseY, 60, 60);  // draw circle at mouse loc
+        background(0);    // paint screen white
+        fill(0,255,0);
+        bob1.update();
+        bob2.update();
+        bob3.update();
+        bob1.draw(this);
+        bob2.draw(this);
+        bob3.draw(this);
     }
 
     public static void main(String[] args) {
