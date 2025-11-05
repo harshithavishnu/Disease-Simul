@@ -1,7 +1,9 @@
 import processing.core.PApplet;
 
+import java.util.ArrayList;
+
 public class Game extends PApplet {
-    Person bob1, bob2, bob3;
+    ArrayList<Person> persons = new ArrayList<>();
 
     public void settings() {
         size(800, 800);   // set the window size
@@ -9,9 +11,12 @@ public class Game extends PApplet {
     }
 
     public void setup() {
-        Person bob = new Person(0);
-        Person bob2 = new Person(1);
-        Person bob3 = new Person(2);
+        frameRate(10);
+        for (int i = 0; i < 4; i++) {
+            Person bob = new Person(i);
+            persons.add(bob);
+        }
+
     }
 
     /***
@@ -20,13 +25,12 @@ public class Game extends PApplet {
      */
     public void draw() {
         background(0);    // paint screen white
-        fill(0,255,0);
-        bob1.update();
-        bob2.update();
-        bob3.update();
-        bob1.draw(this);
-        bob2.draw(this);
-        bob3.draw(this);
+
+        for (int i = 0; i < persons.size(); i++) {
+            Person b = persons.get(i);
+            b.update();
+            b.draw(this);
+        }
     }
 
     public static void main(String[] args) {
