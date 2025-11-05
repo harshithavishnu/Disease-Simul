@@ -22,21 +22,21 @@ public class Person extends PApplet{
         this.status = status;
         counter = 0;
         if(status == 0) {
-            immunity = 50;
-            this.fill(green);
+            immunity = 25;
+            fill(green);
         }
         if (status == 2){
-            immunity = 75;
-            this.fill(blue);
+            immunity = 50;
+            fill(blue);
         }
         if (status == 1){
             immunity = 0;
-            this.fill(red);
+            fill(red);
         }
 
         else{
             immunity = 0;
-            this.fill(gray);
+            fill(gray);
         }
     }
 
@@ -48,7 +48,7 @@ public class Person extends PApplet{
         size = 10;
         status = 0;
         counter = 0;
-        immunity = 50;
+        immunity = 25;
         fill(green);
     }
 
@@ -80,13 +80,15 @@ public class Person extends PApplet{
         return (Dist < combinedRad);
     }
 
-    public void isInfectedBy(Person other){
+    public boolean isInfectedBy(Person other){
         if ((this.isCollidingWith(other)) && (other.getStatus()==1)){
             int probability = (int) (Math.random()*100);
             if (probability > immunity){
                 this.setStatus(1);
+                return true;
             }
         }
+        return false;
     }
 
     public void isDead(){
@@ -108,15 +110,23 @@ public class Person extends PApplet{
         if (x > 800) xSpeed = -xSpeed;
         if (y < 0)ySpeed = -ySpeed;
         if (y > 800) ySpeed = -ySpeed;
-        if (this.getStatus() == 1){
-            this.fill(red);
+        if (this.getStatus() == 1 && counter==10) {
+            int chanceOfDeath = (int) (Math.random() * 100);
+            if (chanceOfDeath > immunity) {
+                this.setStatus(3);
+            }
+        }
+        if (this.getStatus() == 1 && counter < 10){
+            fill(red);
             counter++;
         }
         if (this.getStatus()==2){
-            this.fill(blue);
+            fill(blue);
         }
         if (this.getStatus()==3){
-            this.fill(gray);
+            fill(gray);
+            xSpeed = 0;
+            ySpeed = 0;
         }
     }
 

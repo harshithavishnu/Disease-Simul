@@ -20,16 +20,20 @@ public class Game extends PApplet {
     }
 
     /***
-     * Draws each frame to the screen.  Runs automatically in a loop at frameRate frames a second.
+     * Draws each frame to the screen. Runs automatically in a loop at frameRate frames a second.
      * tick each object (have it update itself), and draw each object
      */
     public void draw() {
         background(0);    // paint screen white
 
         for (int i = 0; i < persons.size(); i++) {
-            Person b = persons.get(i);
-            b.update();
-            b.draw(this);
+            for (int j = 0; j < persons.size(); j++) {
+                Person b = persons.get(i);
+                Person c = persons.get(i);
+                b.isInfectedBy(c);
+                b.update();
+                b.draw(this);
+            }
         }
     }
 
