@@ -4,8 +4,13 @@ import java.util.ArrayList;
 public class Population extends PApplet {
     private ArrayList<Person> persons;
     private int popImmunity;
+    private int noOfPeople;
 
-
+    public Population(ArrayList<Person> list, int immunity){
+        persons = list;
+        popImmunity = immunity;
+        noOfPeople = persons.size();
+    }
 
 
     public void setPopImmunity(int immunity){

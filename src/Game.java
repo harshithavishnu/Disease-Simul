@@ -3,7 +3,7 @@ import processing.core.PApplet;
 import java.util.ArrayList;
 
 public class Game extends PApplet {
-    ArrayList<Person> persons = new ArrayList<>();
+    ArrayList<Person> people = new ArrayList<>();
 
     public void settings() {
         size(800, 800);   // set the window size
@@ -14,7 +14,7 @@ public class Game extends PApplet {
         frameRate(10);
         for (int i = 0; i < 4; i++) {
             Person bob = new Person(i);
-            persons.add(bob);
+            people.add(bob);
         }
 
     }
@@ -26,10 +26,10 @@ public class Game extends PApplet {
     public void draw() {
         background(0);    // paint screen white
 
-        for (int i = 0; i < persons.size(); i++) {
-            for (int j = 0; j < persons.size(); j++) {
-                Person b = persons.get(i);
-                Person c = persons.get(i);
+        for (int i = 0; i < people.size(); i++) {
+            for (int j = 0; j < people.size(); j++) {
+                Person b = people.get(i);
+                Person c = people.get(i);
                 b.isInfectedBy(c);
                 b.update();
                 b.draw(this);
