@@ -16,9 +16,9 @@ public class Person extends PApplet{
     public Person(int status) {//remember to have method in population to change immunity
         x = (float)(Math.random()*790+5);
         y = (float)(Math.random()*790+5);
-        xSpeed = 20;
-        ySpeed = 20;
-        size = 10;
+        xSpeed = 3;
+        ySpeed = 3;
+        size = 7;
         this.status = status;
         counter = 0;
         if(status == 0) {
@@ -43,9 +43,9 @@ public class Person extends PApplet{
     public Person(){
         x = (float)(Math.random()*790+5);
         y = (float)(Math.random()*790+5);
-        xSpeed = 20;
-        ySpeed = 20;
-        size = 10;
+        xSpeed = 3;
+        ySpeed = 3;
+        size = 7;
         status = 0;
         counter = 0;
         immunity = 25;
@@ -76,7 +76,7 @@ public class Person extends PApplet{
 
     public boolean isCollidingWith(Person other) {
         float combinedRad = this.size + other.size;
-        float Dist = (float)(Math.sqrt(Math.pow((this.x-other.x), 2))+ (Math.pow((this.x-other.x), 2)));
+        float Dist = dist(this.x, this.y, other.x, other.y);
         return (Dist < combinedRad);
     }
 
