@@ -1,9 +1,8 @@
 import processing.core.PApplet;
-
 import java.util.ArrayList;
 
 public class Game extends PApplet {
-    ArrayList<Person> people = new ArrayList<>();
+    Population population;
 
     public void settings() {
         size(800, 800);   // set the window size
@@ -11,30 +10,27 @@ public class Game extends PApplet {
     }
 
     public void setup() {
-        frameRate(10);
-        for (int i = 0; i < 4; i++) {
-            Person bob = new Person(i);
-            people.add(bob);
-        }
+        frameRate(30);
+        ArrayList<Person> people = new ArrayList<>();
+        int totalPeople = 40;
+        int initiallyInfected = 20;
 
-    }
-
-    /***
-     * Draws each frame to the screen. Runs automatically in a loop at frameRate frames a second.
-     * tick each object (have it update itself), and draw each object
-     */
-    public void draw() {
-        background(0);    // paint screen white
-
-        for (int i = 0; i < people.size(); i++) {
-            for (int j = 0; j < people.size(); j++) {
-                Person b = people.get(i);
-                Person c = people.get(i);
-                b.isInfectedBy(c);
-                b.update();
-                b.draw(this);
+        for (int i = 0; i < totalPeople; i++) {
+            if (i < initiallyInfected) {
+                people.add(new Person(1)); // infected
+            } else {
+                people.add(new Person(0)); // healthy
             }
         }
+        population = new Population(people, 40, 80);
+    }
+
+    public void draw() {
+        background(0);    // paint screen white
+        population.infectAll();
+        population.updateAll();
+        population.displayAll(this);
+
     }
 
     public static void main(String[] args) {
