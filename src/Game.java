@@ -3,6 +3,8 @@ import java.util.ArrayList;
 
 public class Game extends PApplet {
     Population population;
+    int state = 0;
+    ArrayList<Person> people = new ArrayList<>();
 
     public void settings() {
         size(800, 800);   // set the window size
@@ -11,7 +13,6 @@ public class Game extends PApplet {
 
     public void setup() {
         frameRate(30);
-        ArrayList<Person> people = new ArrayList<>();
         int totalPeople = 40;
         int initiallyInfected = 20;
 
@@ -30,10 +31,51 @@ public class Game extends PApplet {
         population.infectAll();
         population.updateAll();
         population.displayAll(this);
+        background(0);
 
+        if (state == 0) {
+            drawStartScreen();
+        } else if (state == 1) {
+            drawSimulation();
+        }
+    }
+
+    public void drawStartScreen() {
+        background(30);
+        textAlign(CENTER);
+        textSize(50);
+        fill(255);
+        text("COVID-19 Simulation", (float) width /2, (float) height /2 - 100);
+
+        // draw start button
+        fill(0, 150, 255);
+        rect((float) width /2 - 100, (float) height /2, 200, 80, 20);
+        fill(255);
+        textSize(32);
+        text("Start", (float) width /2, (float) height /2 + 50);
+    }
+
+    public void drawSimulation() {
+        background(0);
+        for (Person p : people) {
+            p.update();
+            p.draw(this);
+        }
+    }
+
+    public void mousePressed() {
+        if (state == 0) {
+            // check if user clicked inside start button
+            if (mouseX > width/2 - 100 && mouseX < width/2 + 100 &&
+                    mouseY > height/2 && mouseY < height/2 + 80) {
+                state = 1; // start simulation
+            }
+        }
     }
 
     public static void main(String[] args) {
         PApplet.main("Game");
     }
 }
+
+
