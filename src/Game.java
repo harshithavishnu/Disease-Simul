@@ -5,6 +5,7 @@ public class Game extends PApplet {
     Population population;
     int state = 0;
     ArrayList<Person> people = new ArrayList<>();
+    BarChart chart = new BarChart();
 
     public void settings() {
         size(800, 800);   // set the window size
@@ -61,6 +62,9 @@ public class Game extends PApplet {
             p.update();
             p.draw(this);
         }
+        chart.update(population);
+        double healthy = population.getHealthyPercent();
+        chart.draw(this, healthy);
     }
 
     public void mousePressed() {
