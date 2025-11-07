@@ -45,7 +45,7 @@ public class Game extends PApplet {
         textAlign(CENTER);
         textSize(50);
         fill(255);
-        text("COVID-19 Simulation", (float) width /2, (float) height /2 - 100);
+        text("Disease Simulation", (float) width /2, (float) height /2 - 100);
 
         // draw start button
         fill(0, 150, 255);
