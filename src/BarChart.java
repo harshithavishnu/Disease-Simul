@@ -1,35 +1,16 @@
 import processing.core.PApplet;
 
 public class BarChart{
-    private float x, y;
     private float width, height;
     private double healthyPercent = 0, infectedPercent = 0, curedPercent = 0, deadPercent = 0;
 
     public BarChart(){
-        x = 15;
-        y = 400;
         width = 20;
         height = 200;
     }
 
-    public double getDeadPercent() {
-        return deadPercent;
-    }
-
-    public double getCuredPercent() {
-        return curedPercent;
-    }
-
-    public double getInfectedPercent() {
-        return infectedPercent;
-    }
-
-    public double getHealthyPercent() {
-        return healthyPercent;
-    }
 
     public void update(Population people){
-//        int healthy = 0, infected = 0, cured = 0, dead = 0;
         healthyPercent = people.getHealthyPercent();
         infectedPercent = people.getInfectedPercent();
         curedPercent = people.getCuredPercent();
@@ -55,7 +36,7 @@ public class BarChart{
         float baseY = 780;
         float maxHeight = 180;
         window.fill(255);           // white
-        window.noStroke();          // optional: no border
+        window.noStroke();          //no border
         window.rect(0, 600, window.width, 200);
 
         // Healthy

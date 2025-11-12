@@ -6,6 +6,7 @@ public class Game extends PApplet {
     int state = 0;
     ArrayList<Person> people = new ArrayList<>();
     BarChart chart = new BarChart();
+    ArrayList<Slider> sliders = new ArrayList<>();
 
     public void settings() {
         size(800, 800);   // set the window size
@@ -28,6 +29,11 @@ public class Game extends PApplet {
             }
         }
         population = new Population(people,  40);
+
+        for (int i = 0; i < 3; i++) {
+            Slider s = new Slider(580 + 600 * i, 20);
+            sliders.add(s);
+        }
     }
 
     public void draw() {
@@ -63,7 +69,6 @@ public class Game extends PApplet {
 
 
         // draw start button
-
         fill(0, 150, 255);
         rect((float) width /2 - 100, (float) height /2, 200, 80, 20);
         fill(255);
