@@ -19,12 +19,15 @@ public class Game extends PApplet {
 
         for (int i = 0; i < totalPeople; i++) {
             if (i < initiallyInfected) {
-                people.add(new Person(1)); // infected
+                Person p = new Person(1);
+                p.infectionTime = 0;
+                p.timeToDeath = (int) (Math.random() * 200 + 200); // 200–400 frames
+                people.add(p);// infected ppl
             } else {
-                people.add(new Person(0)); // healthy
+                people.add(new Person(0)); // healthy ppl
             }
         }
-        population = new Population(people, 40, 80);
+        population = new Population(people,  40);
     }
 
     public void draw() {

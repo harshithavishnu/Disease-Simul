@@ -9,7 +9,6 @@ public class Person{
     private int immunity;
     int infectionTime;
     int timeToDeath;
-    int timeToHeal;
 
 
     public Person(int status) {//remember to have method in population to change immunity
@@ -20,13 +19,13 @@ public class Person{
         ySpeed = (float)(Math.random() * 3 - 1.5);
         size = 7;
         counter = 0;
-        if (status == 0) immunity = 25;
+        if (status == 0) immunity = (int)(Math.random() * 50);
         else if (status == 2) immunity = 50;
         else immunity = 0;
         infectionTime = 0;
         if (status == 1) {
-            timeToDeath = (int) (Math.random() * 200 + 200);
-            timeToHeal = (int) (Math.random() * 150 + 150);
+            timeToDeath = (int)(Math.random() * 400 + 300); // 300–700
+
         }
 
     }
@@ -39,7 +38,7 @@ public class Person{
         size = 7;
         status = 0;
         counter = 0;
-        immunity = 25;
+        immunity = (int)(Math.random() * 50);
         infectionTime = 0;
     }
 
@@ -72,6 +71,10 @@ public class Person{
         counter = 0;
     }
 
+    public void boostImmunityAfterRecovery() {
+        immunity *= 2;  // double immunity after being cured
+    }
+
 
     public boolean isCollidingWith(Person other) {
         float dist = PApplet.dist(this.x, this.y, other.x, other.y);
@@ -79,13 +82,12 @@ public class Person{
     }
 
     public boolean isInfectedBy(Person other) {
-        if (this.status == 0 && other.status == 1 && isCollidingWith(other)) {
+        if ((this.status == 0 || this.status == 2) && other.status == 1 && isCollidingWith(other)) {
             int chance = (int) (Math.random() * 100);
-            if (chance > immunity) {
+            if (chance > immunity && chance < 80) {
                 this.status = 1;
                 infectionTime = 0;
-                timeToDeath = (int) (Math.random() * 200 + 200); // random between 200–400 frames
-                timeToHeal = (int) (Math.random() * 150 + 150);
+                timeToDeath = (int)(Math.random() * 400 + 300); // 300–700
                 return true;
             }
         }
@@ -93,9 +95,7 @@ public class Person{
     }
 
     public void update() {
-        if (status == 3) {
-            return;
-        }
+        if (status == 3) return;
 
         x = x + xSpeed;
         y = y + ySpeed;
@@ -105,13 +105,18 @@ public class Person{
         if (status == 1) {
             infectionTime++;
 
-            // Option 1: deterministic — different for each person
-            if (infectionTime > timeToDeath) {
-                status = 3; // dead
-            } else if (infectionTime > timeToHeal) {
-                status = 2; // cured
+            // Check if infection duration is over
+            if (infectionTime >= timeToDeath) {  // infectionDuration can be a class field or passed from Population
+                int deathChance = 50; // 50% die, adjust as needed
+                if (Math.random() * 100 < deathChance) {
+                    status = 3; // dead
+                } else {
+                    status = 2; // cured
+                    boostImmunityAfterRecovery(); // double immunity for reinfection
+                }
             }
         }
+
     }
 
         public void draw (PApplet window){

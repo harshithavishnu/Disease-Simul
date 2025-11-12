@@ -4,12 +4,10 @@ import java.util.ArrayList;
 public class Population {
     private ArrayList<Person> persons;
     private int popImmunity;
-    private int infectionDuration;
 
-    public Population(ArrayList<Person> list, int immunity, int infectionDuration) {
+    public Population(ArrayList<Person> list, int immunity) {
         persons = list;
         popImmunity = immunity;
-        this.infectionDuration = infectionDuration;
     }
 
     public ArrayList<Person> getPersons() {
@@ -17,12 +15,14 @@ public class Population {
     }
 
     public void infectAll() {
-        for (int i = 0; i < persons.size(); i++) {
-            for (int j = i + 1; j < persons.size(); j++) {
-                Person a = persons.get(i);
-                Person b = persons.get(j);
-                a.isInfectedBy(b);
-                b.isInfectedBy(a);
+        for (Person a : persons) {
+            if (a.getStatus() != 1) continue; // only infected can infect
+            int infectedThisFrame = 0;
+            for (Person b : persons) {
+                if (infectedThisFrame >= 1) break; // only infect one person per frame
+                if (b.getStatus() == 0 && a.isCollidingWith(b)) {
+                    if (b.isInfectedBy(a)) infectedThisFrame++;
+                }
             }
         }
     }
@@ -63,16 +63,6 @@ public class Population {
             for (Person p : persons) {
                 p.update();
                 p.tickInfection();
-
-                if (p.getStatus() == 1 && p.getCounter() >= infectionDuration) {
-                    int chance = (int) (Math.random() * 100);
-                    if (chance > p.getImmunity()) {
-                        p.setStatus(3); // dead
-                    } else {
-                        p.setStatus(2); // cured
-                    }
-                    p.resetCounter();
-                }
             }
         }
 
