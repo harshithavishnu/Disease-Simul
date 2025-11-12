@@ -1,8 +1,6 @@
 import processing.core.PApplet;
 
-import java.util.ArrayList;
-
-public class BarChart extends PApplet{
+public class BarChart{
     private float x, y;
     private float width, height;
     private double healthyPercent = 0, infectedPercent = 0, curedPercent = 0, deadPercent = 0;
@@ -31,7 +29,7 @@ public class BarChart extends PApplet{
     }
 
     public void update(Population people){
-        int healthy = 0, infected = 0, cured = 0, dead = 0;
+//        int healthy = 0, infected = 0, cured = 0, dead = 0;
         healthyPercent = people.getHealthyPercent();
         infectedPercent = people.getInfectedPercent();
         curedPercent = people.getCuredPercent();
@@ -50,8 +48,40 @@ public class BarChart extends PApplet{
 //        deadPercent = dead/noOfPeople;
     }
 
-    public void draw(PApplet window, double percent){
-        rect( width /2 - 100,  height /2, width, height* (float)(percent));
-        fill(255);
+    public void draw(PApplet window) {
+        float barWidth = 100;
+        float barSpacing = 30;
+        float startX = 50;
+        float baseY = 780;
+        float maxHeight = 180;
+        window.fill(255);           // white
+        window.noStroke();          // optional: no border
+        window.rect(0, 600, window.width, 200);
+
+        // Healthy
+        window.fill(0, 255, 0);
+        window.rect(startX, baseY - (float)(healthyPercent * maxHeight), barWidth, (float)(healthyPercent * maxHeight));
+
+        // Infected
+        window.fill(255, 0, 0);
+        window.rect(startX + barWidth + barSpacing, baseY - (float)(infectedPercent * maxHeight), barWidth, (float)(infectedPercent * maxHeight));
+
+        // Cured
+        window.fill(0, 0, 255);
+        window.rect(startX + 2 * (barWidth + barSpacing), baseY - (float)(curedPercent * maxHeight), barWidth, (float)(curedPercent * maxHeight));
+
+        // Dead
+        window.fill(128);
+        window.rect(startX + 3 * (barWidth + barSpacing), baseY - (float)(deadPercent * maxHeight), barWidth, (float)(deadPercent * maxHeight));
+
+        // Labels
+        window.fill(0);
+        window.textAlign(PApplet.CENTER);
+        window.textSize(16);
+        window.text("Healthy", startX + barWidth / 2, baseY + 20);
+        window.text("Infected", startX + barWidth * 1.5f + barSpacing, baseY + 20);
+        window.text("Cured", startX + barWidth * 2.5f + 2 * barSpacing, baseY + 20);
+        window.text("Dead", startX + barWidth * 3.5f + 3 * barSpacing, baseY + 20);
     }
-}
+
+    }

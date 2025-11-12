@@ -7,29 +7,40 @@ public class Person{
     private int status;// 0= healthy, 1 = infected, 2 = cured, 3 = dead
     private int counter;
     private int immunity;
+    int infectionTime;
+    int timeToDeath;
+    int timeToHeal;
+
 
     public Person(int status) {//remember to have method in population to change immunity
         this.status = status;
         x = (float) (Math.random() * 790 + 5);
-        y = (float) (Math.random() * 790 + 5);
-        xSpeed = (float)(Math.random()*5 + 8); // slower
-        ySpeed = (float)(Math.random()*5 + 8);
+        y = (float) (Math.random() * (800 - 200 - 10) + 5);
+        xSpeed = (float)(Math.random() * 3 - 1.5);
+        ySpeed = (float)(Math.random() * 3 - 1.5);
         size = 7;
         counter = 0;
         if (status == 0) immunity = 25;
         else if (status == 2) immunity = 50;
         else immunity = 0;
+        infectionTime = 0;
+        if (status == 1) {
+            timeToDeath = (int) (Math.random() * 200 + 200);
+            timeToHeal = (int) (Math.random() * 150 + 150);
+        }
+
     }
 
     public Person() {
         x = (float) (Math.random() * 790 + 5);
         y = (float) (Math.random() * 790 + 5);
-        xSpeed = (float) (Math.random() * 5 + 8);
-        ySpeed = (float) (Math.random() * 5 + 8);
+        xSpeed = (float)(Math.random() * 3 - 1.5);
+        ySpeed = (float)(Math.random() * 3 - 1.5);
         size = 7;
         status = 0;
         counter = 0;
         immunity = 25;
+        infectionTime = 0;
     }
 
     public int getStatus() {
@@ -72,7 +83,9 @@ public class Person{
             int chance = (int) (Math.random() * 100);
             if (chance > immunity) {
                 this.status = 1;
-                counter = 0;
+                infectionTime = 0;
+                timeToDeath = (int) (Math.random() * 200 + 200); // random between 200–400 frames
+                timeToHeal = (int) (Math.random() * 150 + 150);
                 return true;
             }
         }
@@ -80,22 +93,33 @@ public class Person{
     }
 
     public void update() {
-        if (status == 3){
+        if (status == 3) {
             return;
         }
 
         x = x + xSpeed;
         y = y + ySpeed;
         if (x < 0 || x > 800) xSpeed = -xSpeed;
-        if (y < 0 || y > 800) ySpeed = -ySpeed;
+        if (y - size / 2 < 0 || y + size / 2 > 800 - 200) ySpeed = -ySpeed;
+
+        if (status == 1) {
+            infectionTime++;
+
+            // Option 1: deterministic — different for each person
+            if (infectionTime > timeToDeath) {
+                status = 3; // dead
+            } else if (infectionTime > timeToHeal) {
+                status = 2; // cured
+            }
+        }
     }
 
-    public void draw(PApplet window){
-        if (status == 0) window.fill(0, 255, 0); //healthy
-        else if (status == 1) window.fill(255, 0, 0); // infected
-        else if (status == 2) window.fill(0, 0, 255); // cured
-        else window.fill(128); //dead
-        window.ellipse(x, y, size, size);
-    }
+        public void draw (PApplet window){
+            if (status == 0) window.fill(0, 255, 0); //healthy
+            else if (status == 1) window.fill(255, 0, 0); // infected
+            else if (status == 2) window.fill(0, 0, 255); // cured
+            else window.fill(128); //dead
+            window.ellipse(x, y, size, size);
+        }
 
-}
+    }

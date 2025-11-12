@@ -14,7 +14,7 @@ public class Game extends PApplet {
 
     public void setup() {
         frameRate(30);
-        int totalPeople = 40;
+        int totalPeople = 70;
         int initiallyInfected = 20;
 
         for (int i = 0; i < totalPeople; i++) {
@@ -29,15 +29,14 @@ public class Game extends PApplet {
 
     public void draw() {
         background(0);    // paint screen white
-        population.infectAll();
-        population.updateAll();
-        population.displayAll(this);
-        background(0);
 
         if (state == 0) {
             drawStartScreen();
         } else if (state == 1) {
             drawSimulation();
+            population.infectAll();
+            population.updateAll();
+            population.displayAll(this);
         }
     }
 
@@ -62,9 +61,11 @@ public class Game extends PApplet {
             p.update();
             p.draw(this);
         }
+        stroke(255);
+        line(0, 600, width, 600);  // separates simulation and chart area
+        noStroke();
         chart.update(population);
-        double healthy = population.getHealthyPercent();
-        chart.draw(this, healthy);
+        chart.draw(this);
     }
 
     public void mousePressed() {
