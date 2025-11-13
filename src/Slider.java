@@ -43,12 +43,14 @@ public class Slider {
 
     public void mouseDragged(PApplet window){
         if (isClicked && window.mouseY != window.pmouseY){
-
+            isDragged = true;
         }
     }
 
     public void mouseReleased(PApplet window){
-        if ()
+        if (!isClicked && window.mouseY != window.pmouseY){
+
+        }
 
     }
 }
