@@ -10,7 +10,7 @@ public class Slider {
 
     public Slider(float x, float y, float value) {
         this.x = x; //make x = 580 for the first one
-        this.y = y; // make y = 20 for all
+        this.y = y;
         height = 300;
         radius = 15;
         this.value = value;
