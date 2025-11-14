@@ -3,24 +3,23 @@ import processing.javafx.PSurfaceFX;
 
 public class Slider {
     private float x, y;
-    private float width, height;
+    private float height;
     private float radius;
-    private boolean isClicked;
+    private float value;
     private boolean isDragged;
 
-    public Slider(float x, float y) {
+    public Slider(float x, float y, float value) {
         this.x = x; //make x = 580 for the first one
         this.y = y; // make y = 20 for all
         height = 300;
         radius = 15;
+        this.value = value;
+        isDragged = false;
+
     }
 
-    public float getX() {
-        return x;
-    }
-
-    public void setX(float x) {
-        this.x = x;
+    public float getValue() {
+        return value;
     }
 
     public void draw(PApplet window) {
@@ -29,28 +28,35 @@ public class Slider {
         window.line(x, y, x, y+height); //ideal placement is (580, 20, 580, 20+300)
 
         //draw the circle to move slider
-        window.ellipse(x, y, radius, radius);
+        float knobY = y + value * height;
+        window.fill(200);
+        window.stroke(0);
+        window.ellipse(x, knobY, radius, radius);
         }
 
 
     public void mousePressed(PApplet window) {
+        float knobY = y + value * height;
     // check if mouse is within the radius of the ellipse
-        float distance = (float) Math.sqrt(Math.pow((window.mouseX - x), 2) + Math.pow((window.mouseY-  y), 2));
-        if (distance <= radius) {
-            isClicked =  true;
+        float distance = window.dist(window.mouseX, window.mouseY, x, knobY);
+        if (distance < radius) {
+            isDragged =  true;
         }
     }
 
     public void mouseDragged(PApplet window){
-        if (isClicked && window.mouseY != window.pmouseY){
-            isDragged = true;
+        if (isDragged){
+            //clamp to mouse!!
+            float newY = window.mouseY;
+
+            if (newY < y) newY = y;
+            if (newY > y + height) newY = y + height;
+
+            value = (newY - y) / height;
         }
     }
 
     public void mouseReleased(PApplet window){
-        if (!isClicked && window.mouseY != window.pmouseY){
-
-        }
-
+        isDragged = false;
     }
 }

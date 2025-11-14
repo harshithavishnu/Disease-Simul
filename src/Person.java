@@ -84,7 +84,7 @@ public class Person{
     public boolean isInfectedBy(Person other) {
         if ((this.status == 0 || this.status == 2) && other.status == 1 && isCollidingWith(other)) {
             int chance = (int) (Math.random() * 100);
-            if (chance > immunity && chance < 80) {
+            if (chance >= immunity) {
                 this.status = 1;
                 infectionTime = 0;
                 timeToDeath = (int)(Math.random() * 400 + 300); // 300–700
@@ -99,7 +99,15 @@ public class Person{
 
         x = x + xSpeed;
         y = y + ySpeed;
-        if (x < 0 || x > 800) xSpeed = -xSpeed;
+        if (x < 0) {
+            x = 0;
+            xSpeed = -xSpeed;
+        }
+
+        if (x > 600 - size/2) {
+            x = 600 - size/2;
+            xSpeed = -xSpeed;
+        }
         if (y - size / 2 < 0 || y + size / 2 > 800 - 200) ySpeed = -ySpeed;
 
         if (status == 1) {

@@ -16,17 +16,6 @@ public class BarChart{
         curedPercent = people.getCuredPercent();
         deadPercent = people.getDeadPercent();
 
-//        for (Person p: humans){
-//            if (p.getStatus() == 0) healthy++;
-//            if (p.getStatus() == 1) infected++;
-//            if (p.getStatus() == 2) cured++;
-//            else dead++;
-//        }
-//        double noOfPeople = healthy + infected + cured + dead;
-//        healthyPercent = healthy/noOfPeople;
-//        infectedPercent = infected/noOfPeople;
-//        curedPercent = cured/noOfPeople;
-//        deadPercent = dead/noOfPeople;
     }
 
     public void draw(PApplet window) {
@@ -59,10 +48,10 @@ public class BarChart{
         window.fill(0);
         window.textAlign(PApplet.CENTER);
         window.textSize(16);
-        window.text("Healthy", startX + barWidth / 2, baseY + 20);
-        window.text("Infected", startX + barWidth * 1.5f + barSpacing, baseY + 20);
-        window.text("Cured", startX + barWidth * 2.5f + 2 * barSpacing, baseY + 20);
-        window.text("Dead", startX + barWidth * 3.5f + 3 * barSpacing, baseY + 20);
+        window.text("Healthy", startX + barWidth / 2, baseY + 15);
+        window.text("Infected", startX + barWidth * 1.5f + barSpacing, baseY + 15);
+        window.text("Cured", startX + barWidth * 2.5f + 2 * barSpacing, baseY + 15);
+        window.text("Dead", startX + barWidth * 3.5f + 3 * barSpacing, baseY + 15);
     }
 
     }
