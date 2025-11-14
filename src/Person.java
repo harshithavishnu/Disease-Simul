@@ -9,9 +9,13 @@ public class Person{
     private int immunity;
     int infectionTime;
     int timeToDeath;
+    private int behavior; //0 = shy, 1 = nomral, 2 = social
+    private float speedMultiplier; // speeed
+    private float infectionMultiplier;
 
 
-    public Person(int status) {//remember to have method in population to change immunity
+
+    public Person(int status, int behaviour) {//remember to have method in population to change immunity
         this.status = status;
         x = (float) (Math.random() * 790 + 5);
         y = (float) (Math.random() * (800 - 200 - 10) + 5);
@@ -27,7 +31,10 @@ public class Person{
             timeToDeath = (int)(Math.random() * 400 + 300); // 300–700
 
         }
-
+        this.behavior = behavior;
+        if (behavior == 0) { speedMultiplier = 0.5f; infectionMultiplier = 0.5f; }
+        else if (behavior == 1) { speedMultiplier = 1.0f; infectionMultiplier = 1.0f; }
+        else { speedMultiplier = 1.5f; infectionMultiplier = 1.5f; }
     }
 
     public Person() {
@@ -76,18 +83,35 @@ public class Person{
     }
 
 
+    public void updateBehavior(float socialActivity) {
+        float rand = (float)Math.random();
+        if (rand < socialActivity * 0.33) {
+            behavior = 0;
+            speedMultiplier = 0.5f;
+            infectionMultiplier = 0.5f;
+        } else if (rand < socialActivity * 0.66) {
+            behavior = 1;
+            speedMultiplier = 1.0f;
+            infectionMultiplier = 1.0f;
+        } else {
+            behavior = 2;
+            speedMultiplier = 1.5f;
+            infectionMultiplier = 1.5f;
+        }
+    }
+
     public boolean isCollidingWith(Person other) {
         float dist = PApplet.dist(this.x, this.y, other.x, other.y);
         return dist < this.size + other.size;
     }
 
     public boolean isInfectedBy(Person other) {
-        if ((this.status == 0 || this.status == 2) && other.status == 1 && isCollidingWith(other)) {
-            int chance = (int) (Math.random() * 100);
-            if (chance >= immunity) {
-                this.status = 1;
+        if ((status == 0 || status == 2) && other.status == 1 && isCollidingWith(other)) {
+            int chance = (int)(Math.random() * 100);
+            if (chance > immunity / infectionMultiplier && chance < 80 * infectionMultiplier) {
+                status = 1;
                 infectionTime = 0;
-                timeToDeath = (int)(Math.random() * 400 + 300); // 300–700
+                timeToDeath = (int)(Math.random() * 400 + 300);
                 return true;
             }
         }
@@ -97,37 +121,45 @@ public class Person{
     public void update() {
         if (status == 3) return;
 
-        x = x + xSpeed;
-        y = y + ySpeed;
+        x += xSpeed * speedMultiplier;
+        y += ySpeed * speedMultiplier;
+
+        // Horizontal bounds (left edge = 0, right edge = 600 because 200px panel)
         if (x < 0) {
             x = 0;
             xSpeed = -xSpeed;
         }
-
         if (x > 600 - size/2) {
             x = 600 - size/2;
             xSpeed = -xSpeed;
         }
-        if (y - size / 2 < 0 || y + size / 2 > 800 - 200) ySpeed = -ySpeed;
+
+        // Vertical bounds (top = 0, bottom = 600 because 200px panel at bottom)
+        if (y - size / 2 < 0) {
+            y = size / 2;
+            ySpeed = -ySpeed;
+        }
+        if (y + size / 2 > 600) {  // previously 800 - 200
+            y = 600 - size / 2;
+            ySpeed = -ySpeed;
+        }
 
         if (status == 1) {
             infectionTime++;
-
-            // Check if infection duration is over
             if (infectionTime >= timeToDeath) {
-                int deathChance = 50; //
+                int deathChance = 50;
                 if (Math.random() * 100 < deathChance) {
-                    status = 3; // dead
+                    status = 3;
                 } else {
-                    status = 2; // cured
-                    boostImmunityAfterRecovery(); // double immunity for reinfection
+                    status = 2;
+                    boostImmunityAfterRecovery();
                 }
             }
         }
-
     }
 
-        public void draw (PApplet window){
+
+    public void draw (PApplet window){
             if (status == 0) window.fill(0, 255, 0); //healthy
             else if (status == 1) window.fill(255, 0, 0); // infected
             else if (status == 2) window.fill(0, 0, 255); // cured

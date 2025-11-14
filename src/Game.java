@@ -15,26 +15,30 @@ public class Game extends PApplet {
 
     public void setup() {
         frameRate(30);
+
+        Slider popSlider     = new Slider(650, 50, 0.3f); // population size
+        Slider immunitySlider = new Slider(750, 50, 0.5f); // avg immunity
+        Slider socialSlider = new Slider(700, 50, 0.5f); // vertical slider
+
+        sliders.add(popSlider);
+        sliders.add(immunitySlider);
+        sliders.add(socialSlider);
+
         int totalPeople = 70;
         int initiallyInfected = 20;
 
         for (int i = 0; i < totalPeople; i++) {
             if (i < initiallyInfected) {
-                Person p = new Person(1);
+                Person p = new Person(1, getSocialActivitySliderValue());
                 p.infectionTime = 0;
                 p.timeToDeath = (int) (Math.random() * 200 + 200); // 200–400 frames
                 people.add(p);// infected ppl
             } else {
-                people.add(new Person(0)); // healthy ppl
+                people.add(new Person (0,getSocialActivitySliderValue())); // healthy ppl
             }
         }
         population = new Population(people,  40);
 
-        Slider popSlider     = new Slider(650, 50, 0.3f); // population size
-        Slider immunitySlider = new Slider(750, 50, 0.5f); // avg immunity
-
-        sliders.add(popSlider);
-        sliders.add(immunitySlider);
     }
 
     public void draw() {
@@ -87,15 +91,18 @@ public class Game extends PApplet {
             s.draw(this);
         }
 
+
         fill(0);
         textSize(18);
         textAlign(LEFT);
         text("Population: " + (int)getPopulationSliderValue() + " people", 605, 430);
         text("Avg Immunity: " + (int)getImmunitySliderValue() + "%", 605, 460);
+        text("Social: " + (int)getSocialActivitySliderValue(), 605, 490);
 
         textSize(18);
         text("Pop Size", 610, 30);
         text("Immunity", 705, 30);
+        text("Social", 670, 380);
 
 
         int totalPeople = getPopulationSliderValue();
@@ -107,28 +114,33 @@ public class Game extends PApplet {
             for (int i = 0; i < totalPeople; i++) {
                 Person p;
                 if (i < initiallyInfected) {
-                    p = new Person(1);
+                    p = new Person(1, getSocialActivitySliderValue());
                     p.infectionTime = 0;
                     p.timeToDeath = (int)(Math.random() * 200 + 200);
                 } else {
-                    p = new Person(0);
+                    p = new Person(0, getSocialActivitySliderValue());
                 }
                 p.setImmunity((int)(Math.random() * avgPopImmunity));
                 people.add(p);
             }
             population = new Population(people, avgPopImmunity);
+        }else {
+            for (Person p : people) {
+                p.update();
+                p.draw(this);
+            }
         }
 
+        population.updateAll();
+        population.displayAll(this);
 
-        for (Person p : people) {
-            p.update();
-            p.draw(this);
-        }
         stroke(255);
         line(0, 600, width, 600);
         noStroke();
         chart.update(population);
         chart.draw(this);
+
+        population.infectAll();
 
     }
 
@@ -141,6 +153,16 @@ public class Game extends PApplet {
         Slider s = sliders.get(1);
         return (int)(s.getValue()*100);
     }
+
+    public int getSocialActivitySliderValue() {
+        float val = sliders.get(2).getValue(); // 0–1
+        if (val < 0.33f) return 0;   // shy
+        else if (val < 0.66f) return 1; // normal
+        else return 2;                 // social
+    }
+
+
+
 
     public void mousePressed() {
         if (state == 0) {
@@ -160,11 +182,11 @@ public class Game extends PApplet {
                     Person p;
 
                     if (i < initiallyInfected) {
-                        p = new Person(1);
+                        p = new Person(1, getSocialActivitySliderValue());
                         p.infectionTime = 0;
                         p.timeToDeath = (int)(Math.random() * 200 + 200);
                     } else {
-                        p = new Person(0);
+                        p = new Person(0, getSocialActivitySliderValue());
                     }
 
                     p.setImmunity((int)(Math.random() * avgPopImmunity));
