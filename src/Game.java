@@ -93,11 +93,11 @@ public class Game extends PApplet {
 
 
         fill(0);
-        textSize(18);
+        textSize(17);
         textAlign(LEFT);
-        text("Population: " + (int)getPopulationSliderValue() + " people", 605, 430);
-        text("Avg Immunity: " + (int)getImmunitySliderValue() + "%", 605, 460);
-        text("Social: " + (int)getSocialActivitySliderValue(), 605, 490);
+        text("Population: " + (int)getPopulationSliderValue() + " people", 603, 430);
+        text("Avg Immunity: " + (int)getImmunitySliderValue() + "%", 603, 460);
+        text("Social: " + (int)getSocialActivitySliderValue(), 603, 490);
 
         textSize(18);
         text("Pop Size", 610, 30);
