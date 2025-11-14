@@ -24,8 +24,8 @@ public class BarChart{
         float startX = 50;
         float baseY = 780;
         float maxHeight = 180;
-        window.fill(255);           // white
-        window.noStroke();          //no border
+        window.fill(255);
+        window.noStroke();
         window.rect(0, 600, window.width, 200);
 
         // Healthy
@@ -44,7 +44,7 @@ public class BarChart{
         window.fill(128);
         window.rect(startX + 3 * (barWidth + barSpacing), baseY - (float)(deadPercent * maxHeight), barWidth, (float)(deadPercent * maxHeight));
 
-        // Labels
+        // Labelinggg
         window.fill(0);
         window.textAlign(PApplet.CENTER);
         window.textSize(16);

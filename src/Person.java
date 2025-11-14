@@ -114,8 +114,8 @@ public class Person{
             infectionTime++;
 
             // Check if infection duration is over
-            if (infectionTime >= timeToDeath) {  // infectionDuration can be a class field or passed from Population
-                int deathChance = 50; // 50% die, adjust as needed
+            if (infectionTime >= timeToDeath) {
+                int deathChance = 50; //
                 if (Math.random() * 100 < deathChance) {
                     status = 3; // dead
                 } else {

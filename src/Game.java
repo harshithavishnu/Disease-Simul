@@ -38,7 +38,7 @@ public class Game extends PApplet {
     }
 
     public void draw() {
-        background(0);    // paint screen white
+        background(0);
 
         if (state == 0) {
             drawStartScreen();
@@ -151,9 +151,9 @@ public class Game extends PApplet {
                 people.clear();
 
                 int totalPeople = getPopulationSliderValue();
-                int initiallyInfected = totalPeople / 4;  // 25% start sick
+                int initiallyInfected = totalPeople / 4;
 
-                int avgPopImmunity = getImmunitySliderValue();  // 0–100
+                int avgPopImmunity = getImmunitySliderValue();
 
                 for (int i = 0; i < totalPeople; i++) {
 
@@ -167,7 +167,6 @@ public class Game extends PApplet {
                         p = new Person(0);
                     }
 
-                    // override immunity using slider
                     p.setImmunity((int)(Math.random() * avgPopImmunity));
 
                     people.add(p);
