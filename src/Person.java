@@ -9,8 +9,8 @@ public class Person{
     private int immunity;
     int infectionTime;
     int timeToDeath;
-    private int behavior; //0 = shy, 1 = nomral, 2 = social
-    private float speedMultiplier; // speeed
+    private int behavior; //0 = shy, 1 = normal, 2 = social
+    private float speedMultiplier; // speed
     private float infectionMultiplier;
 
 
@@ -37,17 +37,17 @@ public class Person{
         else { speedMultiplier = 1.5f; infectionMultiplier = 1.5f; }
     }
 
-    public Person() {
-        x = (float) (Math.random() * 790 + 5);
-        y = (float) (Math.random() * 790 + 5);
-        xSpeed = (float)(Math.random() * 3 - 1.5);
-        ySpeed = (float)(Math.random() * 3 - 1.5);
-        size = 7;
-        status = 0;
-        counter = 0;
-        immunity = (int)(Math.random() * 50);
-        infectionTime = 0;
-    }
+//    public Person() {
+//        x = (float) (Math.random() * 790 + 5);
+//        y = (float) (Math.random() * 790 + 5);
+//        xSpeed = (float)(Math.random() * 3 - 1.5);
+//        ySpeed = (float)(Math.random() * 3 - 1.5);
+//        size = 7;
+//        status = 0;
+//        counter = 0;
+//        immunity = (int)(Math.random() * 50);
+//        infectionTime = 0;
+//    }
 
     public int getStatus() {
         return status;
@@ -82,23 +82,21 @@ public class Person{
         immunity *= 2;  // double immunity after being cured
     }
 
+    public void setBehavior(int behavior) {
+        this.behavior = behavior;
 
-    public void updateBehavior(float socialActivity) {
-        float rand = (float)Math.random();
-        if (rand < socialActivity * 0.33) {
-            behavior = 0;
+        if (behavior == 0) {
             speedMultiplier = 0.5f;
             infectionMultiplier = 0.5f;
-        } else if (rand < socialActivity * 0.66) {
-            behavior = 1;
+        } else if (behavior == 1) {
             speedMultiplier = 1.0f;
             infectionMultiplier = 1.0f;
         } else {
-            behavior = 2;
             speedMultiplier = 1.5f;
             infectionMultiplier = 1.5f;
         }
     }
+
 
     public boolean isCollidingWith(Person other) {
         float dist = PApplet.dist(this.x, this.y, other.x, other.y);

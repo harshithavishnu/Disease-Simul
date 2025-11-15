@@ -16,8 +16,8 @@ public class Game extends PApplet {
     public void setup() {
         frameRate(30);
 
-        Slider popSlider     = new Slider(650, 50, 0.3f); // population size
-        Slider immunitySlider = new Slider(750, 50, 0.5f); // avg immunity
+        Slider popSlider     = new Slider(640, 50, 0.3f); // population size
+        Slider immunitySlider = new Slider(760, 50, 0.5f); // avg immunity
         Slider socialSlider = new Slider(700, 50, 0.5f); // vertical slider
 
         sliders.add(popSlider);
@@ -27,16 +27,6 @@ public class Game extends PApplet {
         int totalPeople = 70;
         int initiallyInfected = 20;
 
-        for (int i = 0; i < totalPeople; i++) {
-            if (i < initiallyInfected) {
-                Person p = new Person(1, getSocialActivitySliderValue());
-                p.infectionTime = 0;
-                p.timeToDeath = (int) (Math.random() * 200 + 200); // 200–400 frames
-                people.add(p);// infected ppl
-            } else {
-                people.add(new Person (0,getSocialActivitySliderValue())); // healthy ppl
-            }
-        }
         population = new Population(people,  40);
 
     }
@@ -91,18 +81,28 @@ public class Game extends PApplet {
             s.draw(this);
         }
 
+        int newBehavior = getSocialActivitySliderValue();
+        for (Person p : people) {
+            p.setBehavior(newBehavior);
+        }
+
 
         fill(0);
         textSize(17);
         textAlign(LEFT);
         text("Population: " + (int)getPopulationSliderValue() + " people", 603, 430);
         text("Avg Immunity: " + (int)getImmunitySliderValue() + "%", 603, 460);
-        text("Social: " + (int)getSocialActivitySliderValue(), 603, 490);
+        text("Sociability: " + (int)getSocialActivitySliderValue(), 603, 490);
+        textSize(15);
+        text("    0: Least Social", 603, 510);
+        text("    1: Normal", 603, 530);
+        text("    2: Outgoing", 603, 550);
+
 
         textSize(18);
         text("Pop Size", 610, 30);
-        text("Immunity", 705, 30);
-        text("Social", 670, 380);
+        text("Immunity", 715, 30);
+        text("Sociability", 660, 380);
 
 
         int totalPeople = getPopulationSliderValue();
@@ -163,7 +163,6 @@ public class Game extends PApplet {
 
 
 
-
     public void mousePressed() {
         if (state == 0) {
             if (mouseX > width/2 - 100 && mouseX < width/2 + 100 &&
@@ -176,41 +175,21 @@ public class Game extends PApplet {
                 int initiallyInfected = totalPeople / 4;
 
                 int avgPopImmunity = getImmunitySliderValue();
-
-                for (int i = 0; i < totalPeople; i++) {
-
-                    Person p;
-
-                    if (i < initiallyInfected) {
-                        p = new Person(1, getSocialActivitySliderValue());
-                        p.infectionTime = 0;
-                        p.timeToDeath = (int)(Math.random() * 200 + 200);
-                    } else {
-                        p = new Person(0, getSocialActivitySliderValue());
-                    }
-
-                    p.setImmunity((int)(Math.random() * avgPopImmunity));
-
-                    people.add(p);
-                }
-
-                population = new Population(people, avgPopImmunity);
-
             }
         } else if (state == 1) {
-            for (Slider s : sliders) s.mousePressed(this);
+            for (Slider s : sliders) s.mousePressed1(this);
         }
     }
 
     public void mouseDragged() {
         if (state == 1) {
-            for (Slider s : sliders) s.mouseDragged(this);
+            for (Slider s : sliders) s.mouseDragged1(this);
         }
     }
 
     public void mouseReleased() {
         if (state == 1) {
-            for (Slider s : sliders) s.mouseReleased(this);
+            for (Slider s : sliders) s.mouseReleased1(this);
         }
     }
 

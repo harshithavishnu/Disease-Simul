@@ -35,7 +35,7 @@ public class Slider {
         }
 
 
-    public void mousePressed(PApplet window) {
+    public void mousePressed1(PApplet window) {
         float knobY = y + value * height;
     // check if mouse is within the radius of the ellipse
         float distance = window.dist(window.mouseX, window.mouseY, x, knobY);
@@ -44,7 +44,7 @@ public class Slider {
         }
     }
 
-    public void mouseDragged(PApplet window){
+    public void mouseDragged1(PApplet window){
         if (isDragged){
             //clamp to mouse!!
             float newY = window.mouseY;
@@ -56,7 +56,7 @@ public class Slider {
         }
     }
 
-    public void mouseReleased(PApplet window){
+    public void mouseReleased1(PApplet window){
         isDragged = false;
     }
 }
